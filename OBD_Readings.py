@@ -128,7 +128,7 @@ def get_OBD_readings() -> dict:
         'O2_B1S2': obd.commands.O2_B1S2,              # O2 sensor bank 1, sensor 2
         'TIMING_ADVANCE': obd.commands.TIMING_ADVANCE,       # IGNITION_TIMING
         'FUEL_PRESSURE': obd.commands.FUEL_PRESSURE,
-        #'GET_DTC': obd.commands.GET_DTC                    # comment for simulator. Needed for real car OBD2 reading
+        #'GET_DTC': obd.commands.GET_DTC                    # comment for simulator. Needed for real car OBD2 readings
     }
 
     data = {}
