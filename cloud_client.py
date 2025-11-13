@@ -1,6 +1,6 @@
 import requests
 
-RENDER_API_URL = "https://your-render-backend.onrender.com/explain"  # Replace with your real Render URL
+RENDER_API_URL = "https://obdpluscloud.onrender.com/explain"  # Replace with your real Render URL
 
 def get_dtc_explanation_from_cloud(code, freeze_frame):
     """
@@ -10,7 +10,7 @@ def get_dtc_explanation_from_cloud(code, freeze_frame):
     payload = {"code": code, "freeze_frame": freeze_frame}
 
     try:
-        res = requests.post(RENDER_API_URL, json=payload, timeout=20)
+        res = requests.post(RENDER_API_URL, json=payload)
         if res.status_code == 200:
             return res.json()
         else:
