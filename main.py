@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from obd_manager import OBDManager
+import cloud_client as cloud
 from obd_functions import (
     get_dtc_codes, get_freeze_frame, clear_dtc,
     start_live_polling, stop_live_polling, get_latest_live_data
@@ -76,7 +77,7 @@ def explain_code(code: str):
         raise HTTPException(status_code=400, detail="Not connected")
 
     freeze_frame_data = get_freeze_frame(conn)
-    explanation = get_dtc_explanation_from_cloud(code, freeze_frame_data)
+    explanation = cloud.get_dtc_explanation_from_cloud(code, freeze_frame_data)
 
     return {
         "code": code,
