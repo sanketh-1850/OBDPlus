@@ -1,9 +1,4 @@
 from fastapi import FastAPI, HTTPException
-import threading
-import time
-import requests
-from datetime import datetime
-
 from obd_manager import OBDManager
 import cloud_client as cloud
 from obd_functions import (
@@ -13,39 +8,6 @@ from obd_functions import (
 
 app = FastAPI()
 obd_mgr = OBDManager()
-
-
-# --------------------------------------------------------
-# 1. Lightweight ping endpoint (Render-friendly)
-# --------------------------------------------------------
-@app.get("/ping")
-def ping():
-    return {"ok": True}
-
-# --------------------------------------------------------
-# 2. Keep-align function (self-ping)
-# --------------------------------------------------------
-RENDER_URL = "https://obdpluscloud.onrender.com/ping"  # your Render URL
-
-def keep_alive():
-    while True:
-        try:
-            res = requests.get(RENDER_URL, timeout=10)
-            print("PING:", res.status_code, datetime.now())
-        except Exception as e:
-            print("Ping error:", e)
-        time.sleep(600)  # every 1 minute
-
-# --------------------------------------------------------
-# 3. Start keep-alive background thread on startup
-# --------------------------------------------------------
-@app.on_event("startup")
-def start_keep_alive_thread():
-    thread = threading.Thread(target=keep_alive, daemon=True)
-    thread.start()
-    print("🔥 Keep-alive thread started")
-
-
 
 @app.get("/connect")
 def connect_obd():
