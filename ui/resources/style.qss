@@ -1,0 +1,141 @@
+/* --- Colors --- */
+* {
+  --bg: #0b1220;
+  --panel: #0f1724;
+  --panel-2: #122233;
+  --text: #f2f6fb;
+  --muted: #9aa6bd;
+  --primary: #6ec1ff;
+  --primary-2: #3a8dff;
+  --accent: #8b5cf6;
+  --danger: #ff6b6b;
+  --card: #0f1726;
+}
+
+QMainWindow {
+  background: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #071021, stop:1 #0e1624);
+}
+
+#SideMenu {
+  background: qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 #0e1728, stop:1 #0b1b2b);
+  border-right: 1px solid rgba(255,255,255,0.04);
+  padding: 12px;
+}
+#MenuTitle { color: var(--text); font-size: 20px; font-weight: 800; letter-spacing: 0.6px; }
+#MenuFooter { color: var(--muted); font-size: 12px; }
+
+#NavButton {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: left;
+  min-width: 160px;
+}
+#NavButton:hover { background: rgba(255,255,255,0.03); transform: translateX(4px); }
+#NavButton:disabled { color: #6a7284; border-color: rgba(255,255,255,0.03); }
+
+/* Active nav state */
+#NavButton:checked {
+  background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 var(--primary), stop:1 var(--accent));
+  color: #07263b;
+  border: none;
+  font-weight: 700;
+}
+
+#PageHeader { color: var(--text); font-size: 24px; font-weight: 900; }
+#SubHeader { color: var(--muted); }
+
+/* Make dialog subheaders (e.g., Explain dialog) more readable on dark backgrounds */
+QDialog QLabel#SubHeader {
+  color: #cfe8ff; /* lighter, desaturated blue for good contrast */
+  font-weight: 600;
+}
+
+/* Dialog title shown inside dialog content */
+QDialog QLabel#DialogTitle {
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+/* Explain dialog main text */
+QDialog QTextBrowser#ExplainText {
+  font-size: 13pt;
+  color: var(--text);
+}
+#StatusText { color: var(--muted); }
+#ResultText { color: var(--text); }
+
+#PrimaryButton {
+  background: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 var(--primary), stop:1 var(--primary-2));
+  color: #052033;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+#PrimaryButton:hover { box-shadow: 0 6px 18px rgba(58,141,255,0.16); transform: translateY(-1px); }
+
+/* Disabled states for primary and danger buttons */
+#PrimaryButton:disabled {
+  background: rgba(110,193,255,0.12);
+  color: #6a7284;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+#PrimaryButton:disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+#SecondaryButton {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+#SecondaryButton:hover { background: rgba(255,255,255,0.02); }
+
+#DangerButton {
+  background: qlineargradient(x1:0,y1:0,x2:1,y2:1, stop:0 #ff8a8a, stop:1 var(--danger));
+  color: #2b0b0b;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+#DangerButton:hover { box-shadow: 0 6px 16px rgba(255,107,107,0.12); }
+
+#DangerButton:disabled {
+  background: rgba(255,107,107,0.08);
+  color: #6a7284;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+#DangerButton:disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+#Card, #CardRow {
+  background: qlineargradient(x1:0,y1:0,x2:0,y2:1, stop:0 rgba(255,255,255,0.01), stop:1 rgba(0,0,0,0.06));
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 8px;
+}
+#CodeLabel { color: var(--text); font-size: 16px; font-weight: 700; }
+#DescLabel { color: var(--muted); }
+#KeyLabel  { color: var(--text); }
+#ValueLabel{ color: var(--muted); }
+
+QLabel { color: var(--text); }
+QScrollArea { border: none; }
+QDialog { background: var(--panel-2); }
+QMessageBox { background: var(--panel-2); }
+
+/* Loading text style */
+#LoadingText { color: var(--muted); font-style: italic; padding: 6px 0; }
+
+/* subtle transitions */
+QWidget { transition: all 120ms ease-in-out; }

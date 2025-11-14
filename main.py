@@ -11,32 +11,32 @@ obd_mgr = OBDManager()
 
 @app.get("/connect")
 def connect_obd():
-    if obd_mgr.connect():
-        return {"status": "connected", "port": obd_mgr.get_conn().port_name()}
-    return {"status": "failed"}
+    # Guard against duplicate connection attempts
+    existing = obd_mgr.get_conn()
+    if existing and existing.is_connected():
+        return {"status": "already_connected"}
+    try:
+        if obd_mgr.connect(test=True):  # test mode per current setup
+            return {"status": "connected"}
+        return {"status": "failed"}
+    except Exception as e:
+        print(f"/connect error: {e}")
+        return {"status": "error", "detail": str(e)}
 
 @app.get("/disconnect")
 def disconnect():
-    """
-    Safely disconnect from the OBD-II adapter.
-    Stops live polling and closes the OBD connection.
-    """
-    # Stop live data polling if running
+    """Stop live polling and close OBD connection safely."""
     try:
-        from obd_functions import stop_live_polling
         stop_live_polling()
-    except:
+    except Exception:
         pass
-
-    # Close OBD-II connection
-    if obd_mgr.conn:
+    conn_obj = obd_mgr.get_conn()
+    if conn_obj and conn_obj.is_connected():
         try:
-            obd_mgr.conn.close()
-            obd_mgr.conn = None
+            obd_mgr.disconnect()
             return {"status": "disconnected"}
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error disconnecting: {e}")
-
     return {"status": "not_connected"}
 
 
@@ -77,8 +77,23 @@ def explain_code(code: str):
         raise HTTPException(status_code=400, detail="Not connected")
 
     freeze_frame_data = get_freeze_frame(conn)
-    explanation = cloud.get_dtc_explanation_from_cloud(code, freeze_frame_data)
 
+    # Call cloud explain with a conservative timeout and robust error handling.
+    try:
+        explanation = cloud.get_dtc_explanation_from_cloud(code, freeze_frame_data, timeout=70)
+    except Exception as e:
+        # Defensive: cloud_client should return dicts, but guard anyhow
+        explanation = {"error": f"Explain service failed: {e}"}
+
+    # If the cloud returned an error dict, propagate it to the UI (so user sees a friendly message)
+    if isinstance(explanation, dict) and explanation.get("error"):
+        return {
+            "code": code,
+            "freeze_frame": freeze_frame_data,
+            "explanation": explanation
+        }
+
+    # Normal successful case
     return {
         "code": code,
         "freeze_frame": freeze_frame_data,

@@ -2,7 +2,11 @@ import obd
 import time
 import threading
 
-test = True
+# Synchronization primitives and thread reference for safe concurrent access
+obd_lock = threading.Lock()
+polling_thread = None
+
+test = False
 
 def detect_dtcs(data):
     dtcs = []
@@ -163,13 +167,18 @@ def get_dtc_codes(conn):
     """
     try:
         if test:
-            dtcs = detect_dtcs(get_freeze_frame(conn))
+            # In test mode we derive DTCs from a synthetic freeze frame
+            frame = get_freeze_frame(conn)
+            dtcs = detect_dtcs(frame)
+            return dtcs
         else:
-            response = conn.query(obd.commands.GET_DTC)
+            if not conn:
+                return []
+            with obd_lock:
+                response = conn.query(obd.commands.GET_DTC)
             if response.is_null():
                 return []
-            dtcs = [(code, desc) for code, desc in response.value]
-        return dtcs
+            return [(code, desc) for code, desc in response.value]
     except Exception as e:
         print(f"[get_dtc_codes] Error: {e}")
         return []
@@ -180,7 +189,10 @@ def clear_dtc(conn):
     Clear all Diagnostic Trouble Codes.
     """
     try:
-        conn.query(obd.commands.CLEAR_DTC)
+        if not conn:
+            return "❌ No active connection."
+        with obd_lock:
+            conn.query(obd.commands.CLEAR_DTC)
         return "✅ DTCs cleared successfully."
     except Exception as e:
         print(f"[clear_dtc] Error: {e}")
@@ -194,14 +206,16 @@ def get_freeze_frame(conn):
     frame_data = {}
     if test:
         return get_live_data(conn)
-    else:
-        for name, cmd in freeze_commands.items():
-            try:
-                resp = conn.query(cmd)
-                frame_data[name] = str(resp.value) if not resp.is_null() else "N/A"
-            except Exception as e:
-                frame_data[name] = f"Error: {e}"
+    if not conn:
         return frame_data
+    for name, cmd in freeze_commands.items():
+        try:
+            with obd_lock:
+                resp = conn.query(cmd)
+            frame_data[name] = str(resp.value) if not resp.is_null() else "N/A"
+        except Exception as e:
+            frame_data[name] = f"Error: {e}"
+    return frame_data
 
 
 def get_live_data(conn):
@@ -209,9 +223,12 @@ def get_live_data(conn):
     Read current live sensor data once (non-continuous).
     """
     live_data = {}
+    if not conn:
+        return live_data
     for name, cmd in live_commands.items():
         try:
-            resp = conn.query(cmd)
+            with obd_lock:
+                resp = conn.query(cmd)
             live_data[name] = str(resp.value) if not resp.is_null() else "N/A"
         except Exception as e:
             live_data[name] = f"Error: {e}"
@@ -230,11 +247,15 @@ def start_live_polling(conn, interval=1):
     """
     Continuously query live OBD data every `interval` seconds in a background thread.
     """
-    global polling_active
+    global polling_active, polling_thread
+    if polling_active:
+        return  # Already polling
+    if not conn:
+        return
     polling_active = True
 
     def poll():
-        global live_data_cache
+        global live_data_cache, polling_active
         print("✅ Live data polling started.")
         while polling_active:
             try:
@@ -246,17 +267,22 @@ def start_live_polling(conn, interval=1):
                 break
         print("🛑 Live data polling thread ended.")
 
-    thread = threading.Thread(target=poll, daemon=True)
-    thread.start()
+    polling_thread = threading.Thread(target=poll, daemon=True)
+    polling_thread.start()
 
 
 def stop_live_polling():
     """
     Stop the continuous live data polling thread.
     """
-    global polling_active
+    global polling_active, polling_thread
+    if not polling_active:
+        return
     polling_active = False
-    print("🛑 Live data polling stopped.")
+    print("🛑 Live data polling stop requested.")
+    if polling_thread and polling_thread.is_alive():
+        polling_thread.join(timeout=2)
+    polling_thread = None
 
 
 def get_latest_live_data():

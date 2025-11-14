@@ -4,7 +4,7 @@ class OBDManager:
     def __init__(self):
         self.conn = None
 
-    def connect(self, port=None, test=True):
+    def connect(self, port=None, test=False):
         if test:
             self.conn = obd.OBD("COM9")
         else:
