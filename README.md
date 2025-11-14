@@ -1,8 +1,8 @@
-# OBD++
+# OBDPlus
 
-OBD++ is a desktop OBD-II diagnostic assistant that couples an attractive PyQt6 frontend with a FastAPI backend. It reads live sensor data and diagnostic trouble codes (DTCs) from a vehicle's OBD-II port and uses integrated AI explanation to give clear, human-friendly descriptions, likely causes, and suggested fixes for fault codes.
+OBDPlus is a desktop OBD-II diagnostic assistant that couples an attractive PyQt6 frontend with a FastAPI backend. It reads live sensor data and diagnostic trouble codes (DTCs) from a vehicle's OBD-II port and uses integrated AI explanation to give clear, human-friendly descriptions, likely causes, and suggested fixes for fault codes.
 
-Every car sold since 1996 exposes standardized OBD-II PIDs and DTCs. Most tools only display a code and short description — OBD++ goes further by combining the code description, common fixes, and freeze-frame (snapshot) sensor data with an AI explanation layer so that mechanics and non-technical users get an actionable, easy-to-understand diagnosis.
+Every car sold since 1996 exposes standardized OBD-II PIDs and DTCs. Most tools only display a code and short description — OBDPlus goes further by combining the code description, common fixes, and freeze-frame (snapshot) sensor data with an AI explanation layer so that mechanics and non-technical users get an actionable, easy-to-understand diagnosis.
 
 Key features
 - Read live sensor data (RPM, speed, coolant temp, MAF, O2 sensors, timing advance, etc.) and display them in an attractive UI with inline sparklines for each sensor.
@@ -24,13 +24,14 @@ Project layout
 
 Prerequisites
 - Python 3.10+ (or compatible) and the dependencies listed in `ui/requirements.txt` for the UI and the project-level `requirements.txt` (if present) for backend components.
-- Backend server (FastAPI) running locally: from project root run:
+
+Backend server (FastAPI) running locally: from project root run (in a different terminal compared to app.py):
 
 ```powershell
 uvicorn main:app --reload
 ```
 
-- For simulated OBD testing (optional): virtual serial pair (e.g., VSPE) and `obdsim` connected to one side; configure the app to use the other COM port (see `Steps_to_run.txt`).
+- For simulated OBD testing (optional): virtual serial pair (e.g., VSPE) and `obdsim` connected to one side; configure the app to use the other COM port.
 
 Install UI dependencies
 
