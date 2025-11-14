@@ -33,8 +33,11 @@ uvicorn main:app --reload
 
 - For simulated OBD testing (optional): virtual serial pair (e.g., VSPE) and `obdsim` connected to one side; configure the app to use the other COM port.
 
-### Install UI dependencies
+### Install dependencies
 
+```powershell
+pip install -r requirements.txt
+```
 ```powershell
 pip install -r ui/requirements.txt
 ```
