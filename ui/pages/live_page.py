@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, Q
 
 from utils.workers import FunctionWorker
 from widgets.sparkline import Sparkline
+from utils.parse_utils import parse_leading_float
 import collections
 import time
 
@@ -153,11 +154,8 @@ class LivePage(QWidget):
                 entry["val_label"].setText(str(v))
 
             # Try to parse numeric value for sparkline
-            try:
-                # strip units if present (e.g., "123.4 kPa")
-                num = float(str(v).split()[0])
-            except Exception:
-                num = None
+            # parse numeric prefix (handles units and noisy strings)
+            num = parse_leading_float(v)
 
             if num is not None:
                 entry = self._rows[k]
