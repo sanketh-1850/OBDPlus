@@ -11,7 +11,7 @@ Every car sold since 1996 exposes standardized OBD-II PIDs and DTCs. Most tools 
 - Clear DTCs (when desired) and verify with live data and freeze-frame inspection.
 - Background-safe design: long-running operations run in worker threads and the UI remains responsive.
 
-Project layout
+### Project layout
 - `main.py` — FastAPI backend entry (API endpoints for connect/disconnect, live data, dtcs, explain).
 - `obd_functions.py` — OBD access helpers, live polling, and caching.
 - `cloud_client.py` — optional cloud explain client used by the backend.
@@ -22,10 +22,10 @@ Project layout
 	- `ui/widgets/` — custom widgets (sparklines, etc.)
 	- `ui/requirements.txt` — UI dependencies (PyQt6, pyqtgraph, requests)
 
-Prerequisites
+### Prerequisites
 - Python 3.10+ (or compatible) and the dependencies listed in `ui/requirements.txt` for the UI and the project-level `requirements.txt` (if present) for backend components.
 
-Backend server (FastAPI) running locally: from project root run (in a different terminal compared to app.py):
+### Backend server (FastAPI) running locally: from project root run (in a different terminal compared to app.py):
 
 ```powershell
 uvicorn main:app --reload
@@ -33,22 +33,22 @@ uvicorn main:app --reload
 
 - For simulated OBD testing (optional): virtual serial pair (e.g., VSPE) and `obdsim` connected to one side; configure the app to use the other COM port.
 
-Install UI dependencies
+### Install UI dependencies
 
 ```powershell
 pip install -r ui/requirements.txt
 ```
 
-Run the UI
+### Run the UI
 
 ```powershell
 python ui/app.py
 ```
 
-Notes and UX
+### Notes and UX
 - The Live page shows sensor rows with three aligned columns: sensor name (left), current value with units (center), and a compact sparkline (right) providing recent history.
 - The app uses background workers for blocking API calls and keeps live polling isolated so the UI remains responsive.
 - The AI explanation feature returns formatted HTML that the UI presents in a dialog for DTC details.
 
-Contributing and development
+### Contributing and development
 - The project is organized to separate UI and backend concerns; UI changes can be developed within the `ui/` folder while backend endpoints live at the project root. If you run the backend and UI locally you can iterate quickly.
