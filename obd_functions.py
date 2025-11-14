@@ -6,7 +6,7 @@ import threading
 obd_lock = threading.Lock()
 polling_thread = None
 
-test = False
+test = True
 
 def detect_dtcs(data):
     dtcs = []
