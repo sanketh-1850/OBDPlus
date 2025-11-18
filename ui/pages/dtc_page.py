@@ -83,11 +83,29 @@ class DtcPage(QWidget):
         self.pool.start(worker)
 
     def _populate_codes(self, codes):
-        # codes is expected list of [code, description]
+        # Normalize backend response and handle "no codes" case with a simple message.
+        # Expected payload is a list of [code, description] pairs, but be defensive.
+
+        # Clear any existing widgets except the trailing stretch.
+        while self.list_layout.count() > 1:
+            item = self.list_layout.takeAt(0)
+            w = item.widget()
+            if w:
+                w.deleteLater()
+
+        # If backend returned a string like "No codes found", treat as empty.
+        if isinstance(codes, str):
+            codes = []
+
+        # If backend returned None or empty list, show centered message only.
         if not codes:
-            card = self._code_card(["—", "No codes found"])
-            self.list_layout.insertWidget(0, card)
+            label = QLabel("No DTC codes found.")
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label.setObjectName("EmptyStateText")
+            self.list_layout.insertWidget(0, label)
             return
+
+        # Otherwise, render each real code/description pair as a card.
         for pair in codes:
             card = self._code_card(pair)
             self.list_layout.insertWidget(self.list_layout.count() - 1, card)
