@@ -22,31 +22,61 @@ Every car sold since 1996 exposes standardized OBD-II PIDs and DTCs. Most tools 
 	- `ui/widgets/` — custom widgets (sparklines, etc.)
 	- `ui/requirements.txt` — UI dependencies (PyQt6, pyqtgraph, requests)
 
-### Prerequisites
-- Python 3.10+ (or compatible) and the dependencies listed in `ui/requirements.txt` for the UI and the project-level `requirements.txt` (if present) for backend components.
+### Download and run (Windows)
+You do **not** need Python installed to use OBDPlus on Windows.
 
-### Backend server (FastAPI) running locally: from project root run (in a different terminal compared to app.py):
+1. Go to the GitHub **Releases** page for this repository.
+2. Download the latest `OBDPlusLauncher-*.zip` (or `OBDPlusLauncher.zip`).
+3. Right-click the ZIP → **Extract All...** (or use your preferred unzip tool).
+4. Open the extracted `OBDPlusLauncher` folder.
+5. Double-click `OBDPlusLauncher.exe`.
+
+If Windows SmartScreen shows a warning, choose **More info** → **Run anyway** (you may see this until the app is signed and widely used).
+
+### Development setup
+
+If you want to run from source or contribute:
+
+#### Prerequisites
+- Python 3.10+ (or compatible)
+- A working OBD-II adapter (USB/serial or similar)
+
+#### Create and activate a virtual environment
+
+From the project root:
 
 ```powershell
-uvicorn main:app --reload
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-- For simulated OBD testing (optional): virtual serial pair (e.g., VSPE) and `obdsim` connected to one side; configure the app to use the other COM port.
-
-### Install dependencies
+#### Install dependencies
 
 ```powershell
 pip install -r requirements.txt
 ```
+
+#### Run backend (FastAPI)
+
+From the project root in one terminal:
+
 ```powershell
-pip install -r ui/requirements.txt
+.\.venv\Scripts\Activate.ps1
+uvicorn main:app --reload
 ```
 
-### Run the UI
+#### Run the UI
+
+From the project root in a second terminal:
 
 ```powershell
-python ui/app.py
+.\.venv\Scripts\Activate.ps1
+python -m ui.app
 ```
+
+#### Optional: simulated OBD testing
+- Set up a virtual serial pair (e.g. VSPE) and `obdsim` connected to one side.
+- Configure OBDPlus to use the other COM port for testing without a real vehicle.
 
 ### Notes and UX
 - The Live page shows sensor rows with three aligned columns: sensor name (left), current value with units (center), and a compact sparkline (right) providing recent history.
