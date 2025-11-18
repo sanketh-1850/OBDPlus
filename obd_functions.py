@@ -6,7 +6,7 @@ import threading
 obd_lock = threading.Lock()
 polling_thread = None
 
-test = False  # Set to True to enable test mode with synthetic data
+test = True  # Set to True to enable test mode with synthetic data
 
 def detect_dtcs(data):
     dtcs = []

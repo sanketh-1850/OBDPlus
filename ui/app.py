@@ -6,7 +6,13 @@ import base64
 import os
 import sys as _sys
 
-from windows.main_window import MainWindow
+try:
+    # Preferred when `ui` is imported as a package (e.g. `from ui import app`).
+    from .windows.main_window import MainWindow
+except Exception:
+    # Fallback for running `python ui/app.py` directly during development.
+    # Use absolute package import which works when the parent package is on sys.path.
+    from ui.windows.main_window import MainWindow
 
 
 def load_stylesheet(app: QApplication, path: str):

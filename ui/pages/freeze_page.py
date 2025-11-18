@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QThreadPool
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QGridLayout, QPushButton, QMessageBox
 
-from utils.workers import FunctionWorker
+from ..utils.workers import FunctionWorker
 
 
 class FreezePage(QWidget):

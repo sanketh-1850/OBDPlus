@@ -5,12 +5,12 @@ from PyQt6.QtWidgets import (
     QLabel, QFrame, QMessageBox
 )
 
-from api_client import ApiClient
-from pages.landing_page import LandingPage
-from pages.dtc_page import DtcPage
-from pages.live_page import LivePage
-from pages.freeze_page import FreezePage
-from pages.clear_page import ClearPage
+from ..api_client import ApiClient
+from ..pages.landing_page import LandingPage
+from ..pages.dtc_page import DtcPage
+from ..pages.live_page import LivePage
+from ..pages.freeze_page import FreezePage
+from ..pages.clear_page import ClearPage
 
 
 class MainWindow(QMainWindow):

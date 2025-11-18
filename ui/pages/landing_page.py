@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QThreadPool
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QMessageBox
 
-from utils.workers import FunctionWorker
+from ..utils.workers import FunctionWorker
 
 
 class LandingPage(QWidget):

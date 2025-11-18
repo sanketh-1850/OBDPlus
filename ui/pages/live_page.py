@@ -1,9 +1,9 @@
 from PyQt6.QtCore import Qt, QThreadPool, QTimer
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QGridLayout, QMessageBox, QSizePolicy
 
-from utils.workers import FunctionWorker
-from widgets.sparkline import Sparkline
-from utils.parse_utils import parse_leading_float
+from ..utils.workers import FunctionWorker
+from ..widgets.sparkline import Sparkline
+from ..utils.parse_utils import parse_leading_float
 import collections
 import time
 

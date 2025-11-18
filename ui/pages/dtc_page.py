@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
     QMessageBox, QDialog, QDialogButtonBox, QGridLayout, QTextBrowser
 )
 
-from utils.workers import FunctionWorker
+from ..utils.workers import FunctionWorker
 
 
 class DtcPage(QWidget):
