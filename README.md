@@ -1,6 +1,8 @@
 # OBDPlus
 
-https://youtu.be/acSGX-IuhRI?si=DLqzFcmqW5_Y2qCB
+## 🎥 Demo Video
+[![OBDPlus Demo Video](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID)
+---
 
 OBDPlus is a desktop OBD-II diagnostic assistant that couples an attractive PyQt6 frontend with a FastAPI backend. It reads live sensor data and diagnostic trouble codes (DTCs) from a vehicle's OBD-II port and uses integrated AI explanation to give clear, human-friendly descriptions, likely causes, and suggested fixes for fault codes.
 
