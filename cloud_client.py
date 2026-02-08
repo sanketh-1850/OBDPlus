@@ -1,7 +1,7 @@
 import requests
 from requests.adapters import HTTPAdapter, Retry
 
-RENDER_API_URL = "https://obdpluscloud.onrender.com/explain"  # Replace with your real Render URL
+AWS_URL = "http://<your_AWS_IP>/explain"  # Replace with your real Render URL
 
 # Session with light retry policy to avoid long blocking
 _session = requests.Session()
@@ -19,7 +19,7 @@ def get_dtc_explanation_from_cloud(code, freeze_frame, timeout: int = 60):
     payload = {"code": code, "freeze_frame": freeze_frame}
 
     try:
-        res = _session.post(RENDER_API_URL, json=payload, timeout=timeout)
+        res = _session.post(AWS_URL, json=payload, timeout=timeout)
         res.raise_for_status()
         return res.json()
     except requests.exceptions.RequestException as e:

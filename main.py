@@ -16,7 +16,7 @@ def connect_obd():
     if existing and existing.is_connected():
         return {"status": "already_connected"}
     try:
-        if obd_mgr.connect(test=True):  # test mode per current setup
+        if obd_mgr.connect(test=False):  # test mode per current setup
             return {"status": "connected"}
         return {"status": "failed"}
     except Exception as e:
